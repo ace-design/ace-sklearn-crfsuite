@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division
 from functools import wraps
+from itertools import chain
 
-from sklearn_crfsuite.utils import flatten
-
+def flatten(y):
+    """Flatten a list of lists."""
+    return list(chain.from_iterable(y))
 
 def _flattens_y(func):
     @wraps(func)
@@ -56,7 +58,7 @@ def flat_fbeta_score(y_true, y_pred, beta, **kwargs):
     Return F-beta score for sequence items.
     """
     from sklearn import metrics
-    return metrics.fbeta_score(y_true, y_pred, beta, **kwargs)
+    return metrics.fbeta_score(y_true, y_pred, beta=beta, **kwargs)
 
 
 @_flattens_y
@@ -65,7 +67,7 @@ def flat_classification_report(y_true, y_pred, labels=None, **kwargs):
     Return classification report for sequence items.
     """
     from sklearn import metrics
-    return metrics.classification_report(y_true, y_pred, labels, **kwargs)
+    return metrics.classification_report(y_true, y_pred, labels=labels, **kwargs)
 
 
 def sequence_accuracy_score(y_true, y_pred):

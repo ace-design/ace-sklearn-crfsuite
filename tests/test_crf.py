@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
+import pytest
+
 import os
 import pickle
-
-import pytest
 from sklearn.model_selection import cross_val_score
-
 from sklearn_crfsuite import CRF
 
 

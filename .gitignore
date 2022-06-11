@@ -12,3 +12,4 @@ htmlcov
 .cache
 __pycache__
 docs/_build
+.pytest_cache

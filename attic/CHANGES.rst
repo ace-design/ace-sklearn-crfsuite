@@ -1,6 +1,12 @@
 Changes
 =======
 
+0.4.0 (2022-06-11)
+
+* Forked from original repository by ACE lab
+* migrated to scikitlearn new api
+* migrated to pipenv
+
 0.3.6 (2017-06-22)
 ------------------
 

@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import
+#from __future__ import absolute_import
 
-from six.moves import zip
 from tqdm import tqdm
 import pycrfsuite
+from sklearn.base import BaseEstimator
 
-from sklearn_crfsuite._fileresource import FileResource
 from sklearn_crfsuite.trainer import LinePerIterationTrainer
-from sklearn_crfsuite.compat import BaseEstimator
+from sklearn_crfsuite._fileresource import FileResource
 
 
 class CRF(BaseEstimator):
@@ -15,33 +14,27 @@ class CRF(BaseEstimator):
     python-crfsuite wrapper with interface siimlar to scikit-learn.
     It allows to use a familiar fit/predict interface and scikit-learn
     model selection utilities (cross-validation, hyperparameter optimization).
-
     Unlike pycrfsuite.Trainer / pycrfsuite.Tagger this object is picklable;
     on-disk files are managed automatically.
-
     Parameters
     ----------
     algorithm : str, optional (default='lbfgs')
         Training algorithm. Allowed values:
-
         * ``'lbfgs'`` - Gradient descent using the L-BFGS method
         * ``'l2sgd'`` - Stochastic Gradient Descent with L2 regularization term
         * ``'ap'`` - Averaged Perceptron
         * ``'pa'`` - Passive Aggressive (PA)
         * ``'arow'`` - Adaptive Regularization Of Weight Vector (AROW)
-
     min_freq : float, optional (default=0)
         Cut-off threshold for occurrence
         frequency of a feature. CRFsuite will ignore features whose
         frequencies of occurrences in the training data are no greater
         than `min_freq`. The default is no cut-off.
-
     all_possible_states : bool, optional (default=False)
         Specify whether CRFsuite generates state features that do not even
         occur in the training data (i.e., negative state features).
         When True, CRFsuite generates state features that associate all of
         possible combinations between attributes and labels.
-
         Suppose that the numbers of attributes and labels are A and L
         respectively, this function will generate (A * L) features.
         Enabling this function may improve the labeling accuracy because
@@ -49,7 +42,6 @@ class CRF(BaseEstimator):
         to its reference label. However, this function may also increase
         the number of features and slow down the training process
         drastically. This function is disabled by default.
-
     all_possible_transitions : bool, optional (default=False)
         Specify whether CRFsuite generates transition features that
         do not even occur in the training data (i.e., negative transition
@@ -58,158 +50,111 @@ class CRF(BaseEstimator):
         of labels in the training data is L, this function will
         generate (L * L) transition features.
         This function is disabled by default.
-
     c1 : float, optional (default=0)
         The coefficient for L1 regularization.
         If a non-zero value is specified, CRFsuite switches to the
         Orthant-Wise Limited-memory Quasi-Newton (OWL-QN) method.
         The default value is zero (no L1 regularization).
-
         Supported training algorithms: lbfgs
-
     c2 : float, optional (default=1.0)
         The coefficient for L2 regularization.
-
         Supported training algorithms: l2sgd, lbfgs
-
     max_iterations : int, optional (default=None)
         The maximum number of iterations for optimization algorithms.
         Default value depends on training algorithm:
-
         * lbfgs - unlimited;
         * l2sgd - 1000;
         * ap - 100;
         * pa - 100;
         * arow - 100.
-
     num_memories : int, optional (default=6)
         The number of limited memories for approximating the inverse hessian
         matrix.
-
         Supported training algorithms: lbfgs
-
     epsilon : float, optional (default=1e-5)
         The epsilon parameter that determines the condition of convergence.
-
         Supported training algorithms: ap, arow, lbfgs, pa
-
     period : int, optional (default=10)
         The duration of iterations to test the stopping criterion.
-
         Supported training algorithms: l2sgd, lbfgs
-
     delta : float, optional (default=1e-5)
         The threshold for the stopping criterion; an iteration stops
         when the improvement of the log likelihood over the last
         `period` iterations is no greater than this threshold.
-
         Supported training algorithms: l2sgd, lbfgs
-
     linesearch : str, optional (default='MoreThuente')
         The line search algorithm used in L-BFGS updates. Allowed values:
-
         * ``'MoreThuente'`` - More and Thuente's method;
         * ``'Backtracking'`` - backtracking method with regular Wolfe condition;
         * ``'StrongBacktracking'`` -  backtracking method with strong Wolfe
           condition.
-
         Supported training algorithms: lbfgs
-
     max_linesearch : int, optional (default=20)
         The maximum number of trials for the line search algorithm.
-
         Supported training algorithms: lbfgs
-
     calibration_eta : float, optional (default=0.1)
         The initial value of learning rate (eta) used for calibration.
-
         Supported training algorithms: l2sgd
-
     calibration_rate : float, optional (default=2.0)
         The rate of increase/decrease of learning rate for calibration.
-
         Supported training algorithms: l2sgd
-
     calibration_samples : int, optional (default=1000)
         The number of instances used for calibration.
         The calibration routine randomly chooses instances no larger
         than `calibration_samples`.
-
         Supported training algorithms: l2sgd
-
     calibration_candidates : int, optional (default=10)
         The number of candidates of learning rate.
         The calibration routine terminates after finding
         `calibration_samples` candidates of learning rates
         that can increase log-likelihood.
-
         Supported training algorithms: l2sgd
-
     calibration_max_trials : int, optional (default=20)
         The maximum number of trials of learning rates for calibration.
         The calibration routine terminates after trying
         `calibration_max_trials` candidate values of learning rates.
-
         Supported training algorithms: l2sgd
-
     pa_type : int, optional (default=1)
         The strategy for updating feature weights. Allowed values:
-
         * 0 - PA without slack variables;
         * 1 - PA type I;
         * 2 - PA type II.
-
         Supported training algorithms: pa
-
     c : float, optional (default=1)
         Aggressiveness parameter (used only for PA-I and PA-II).
         This parameter controls the influence of the slack term on the
         objective function.
-
         Supported training algorithms: pa
-
     error_sensitive : bool, optional (default=True)
         If this parameter is True, the optimization routine includes
         into the objective function the square root of the number of
         incorrect labels predicted by the model.
-
         Supported training algorithms: pa
-
     averaging : bool, optional (default=True)
         If this parameter is True, the optimization routine computes
         the average of feature weights at all updates in the training
         process (similarly to Averaged Perceptron).
-
         Supported training algorithms: pa
-
     variance : float, optional (default=1)
         The initial variance of every feature weight.
         The algorithm initialize a vector of feature weights as
         a multivariate Gaussian distribution with mean 0
         and variance `variance`.
-
         Supported training algorithms: arow
-
     gamma : float, optional (default=1)
         The tradeoff between loss function and changes of feature weights.
-
         Supported training algorithms: arow
-
     verbose : bool, optional (default=False)
         Enable trainer verbose mode.
-
     model_filename : str, optional (default=None)
         A path to an existing CRFSuite model.
         This parameter allows to load and use existing crfsuite models.
-
         By default, model files are created automatically and saved
         in temporary locations; the preferred way to save/load CRF models
         is to use pickle (or its alternatives like joblib).
-
     """
     def __init__(self,
                  algorithm=None,
-
                  min_freq=None,
                  all_possible_states=None,
                  all_possible_transitions=None,
@@ -233,7 +178,6 @@ class CRF(BaseEstimator):
                  averaging=None,
                  variance=None,
                  gamma=None,
-
                  verbose=False,
                  model_filename=None,
                  keep_tempfiles=False,
@@ -263,35 +207,33 @@ class CRF(BaseEstimator):
         self.averaging = averaging
         self.variance = variance
         self.gamma = gamma
+        self.keep_tempfiles=keep_tempfiles
+        self.model_filename = model_filename
+        self.verbose = verbose
+        self.trainer_cls = trainer_cls
 
+        ## Needs to be refactored and extracted from the __init__ method
         self.modelfile = FileResource(
             filename=model_filename,
             keep_tempfiles=keep_tempfiles,
             suffix=".crfsuite",
             prefix="model"
         )
-        self.verbose = verbose
-        self.trainer_cls = trainer_cls
         self.training_log_ = None
-
         self._tagger = None
         self._info_cached = None
 
     def fit(self, X, y, X_dev=None, y_dev=None):
         """
         Train a model.
-
         Parameters
         ----------
         X : list of lists of dicts
             Feature dicts for several documents (in a python-crfsuite format).
-
         y : list of lists of strings
             Labels for several documents.
-
         X_dev : (optional) list of lists of dicts
             Feature dicts used for testing.
-
         y_dev : (optional) list of lists of strings
             Labels corresponding to X_dev.
         """
@@ -335,68 +277,56 @@ class CRF(BaseEstimator):
     def predict(self, X):
         """
         Make a prediction.
-
         Parameters
         ----------
         X : list of lists of dicts
             feature dicts in python-crfsuite format
-
         Returns
         -------
         y : list of lists of strings
             predicted labels
-
         """
         return list(map(self.predict_single, X))
 
     def predict_single(self, xseq):
         """
         Make a prediction.
-
         Parameters
         ----------
         xseq : list of dicts
             feature dicts in python-crfsuite format
-
         Returns
         -------
         y : list of strings
             predicted labels
-
         """
         return self.tagger_.tag(xseq)
 
     def predict_marginals(self, X):
         """
         Make a prediction.
-
         Parameters
         ----------
         X : list of lists of dicts
             feature dicts in python-crfsuite format
-
         Returns
         -------
         y : list of lists of dicts
             predicted probabilities for each label at each position
-
         """
         return list(map(self.predict_marginals_single, X))
 
     def predict_marginals_single(self, xseq):
         """
         Make a prediction.
-
         Parameters
         ----------
         xseq : list of dicts
             feature dicts in python-crfsuite format
-
         Returns
         -------
         y : list of dicts
             predicted probabilities for each label at each position
-
         """
         labels = self.tagger_.labels()
         self.tagger_.set(xseq)
@@ -408,7 +338,6 @@ class CRF(BaseEstimator):
     def score(self, X, y):
         """
         Return accuracy score computed for sequence items.
-
         For other metrics check :mod:`sklearn_crfsuite.metrics`.
         """
         from sklearn_crfsuite.metrics import flat_accuracy_score

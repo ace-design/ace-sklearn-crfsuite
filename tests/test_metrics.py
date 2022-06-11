@@ -31,7 +31,6 @@ def test_flat_fscore():
     assert metrics.flat_fbeta_score(y1, y2, beta=1, average='macro') == score
 
 
-@pytest.mark.xfail(reason="see https://github.com/TeamHG-Memex/sklearn-crfsuite/issues/1")
 def test_flat_f1_score_binary():
     s = [["x", "y"], ["x", "y"]]
     score = metrics.flat_f1_score(s, s, average='weighted')
