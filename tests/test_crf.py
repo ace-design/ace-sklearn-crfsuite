@@ -4,7 +4,7 @@ import pytest
 import os
 import pickle
 from sklearn.model_selection import cross_val_score
-from sklearn_crfsuite import CRF
+from ace_sklearn_crfsuite import CRF
 
 
 ALGORITHMS =  ["lbfgs", "l2sgd", "pa", "ap", "arow"]

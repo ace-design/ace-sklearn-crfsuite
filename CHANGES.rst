@@ -1,7 +1,8 @@
 Changes
 =======
 
-0.4.0 (2022-06-11)
+0.4.0 (2022-06-12) (FORK)
+-------------------------
 
 * Forked from original repository by ACE lab
 * migrated to scikitlearn new api

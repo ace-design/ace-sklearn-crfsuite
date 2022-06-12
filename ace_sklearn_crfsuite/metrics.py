@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, division
 from functools import wraps
 from itertools import chain
 

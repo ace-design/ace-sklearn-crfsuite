@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ace-sklearn-crfsuite"
+version = "0.4.0"
+description = "Fork of sklearn-crfsuite to provides interface simlar to modern scikit-learn"
+readme = "README.rst"
+authors = [{ name = "Sébastien Mosser", email = "mossers@mcmaster.ca" }]
+license = { text="MIT" }
+classifiers = [
+    'Development Status :: 3 - Alpha',
+        'License :: OSI Approved :: MIT License',
+        'Intended Audience :: Developers',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3.10',
+]
+keywords = ["sklearn", "crf", "crfsuite", "crf++"]
+dependencies = [
+    "tqdm >= 4.64.0",
+    "scikit-learn >= 1.1.1",
+    "tabulate >= 0.8.9",
+    "python-crfsuite >= 0.9.6"
+]
+requires-python = ">=3.10"
+
+[project.urls]
+Homepage = "https://github.com/ace-design/ace-sklearn-crfsuite"
+
+[project.optional-dependencies]
+dev = [
+    "pytest >= 7.1.2",
+    "coverage >=6.4.1",
+]

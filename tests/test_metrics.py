@@ -3,7 +3,7 @@ from __future__ import absolute_import, division
 
 import pytest
 
-from sklearn_crfsuite import metrics
+from ace_sklearn_crfsuite import metrics
 
 
 y1 = [["x", "z", "y"], ["x", "x"]]

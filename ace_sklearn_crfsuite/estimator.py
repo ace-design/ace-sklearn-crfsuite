@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-#from __future__ import absolute_import
-
 from tqdm import tqdm
 import pycrfsuite
 from sklearn.base import BaseEstimator
 
-from sklearn_crfsuite.trainer import LinePerIterationTrainer
-from sklearn_crfsuite._fileresource import FileResource
+from ace_sklearn_crfsuite.trainer import LinePerIterationTrainer
+from ace_sklearn_crfsuite._fileresource import FileResource
 
 
 class CRF(BaseEstimator):
@@ -340,7 +338,7 @@ class CRF(BaseEstimator):
         Return accuracy score computed for sequence items.
         For other metrics check :mod:`sklearn_crfsuite.metrics`.
         """
-        from sklearn_crfsuite.metrics import flat_accuracy_score
+        from ace_sklearn_crfsuite.metrics import flat_accuracy_score
         y_pred = self.predict(X)
         return flat_accuracy_score(y, y_pred)
 
