@@ -59,3 +59,5 @@ To upload the freshly built packages to PyPi:
 
     twine upload -r testpypi dist/*
 
+Remove `-r testpypi` if the deployment went well, to publish to the real PyPi repository
+
