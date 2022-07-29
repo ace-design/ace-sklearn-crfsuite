@@ -11,11 +11,12 @@ pipenv install
 Then start Jupyter inside the virtual environment:
 
 ```
-pipenv run jupyter lab
+pipenv run python -m jupyter notebook tutorial.ipynb   
 ```
 
 And open the `tutorial.ipynb` file.
 
+Remark: we need to use "python -m" to be sure we are using our _pipenv-ed_ version of Jupyter and not the one on th ehost machine. 
 
 ## Pre-trained models
 
