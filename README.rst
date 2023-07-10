@@ -7,7 +7,7 @@ General Information
 
 ace-sklearn-crfsuite is a fork of `sklearn-crfsuite <https://github.com/TeamHG-Memex/sklearn-crfsuite>`_, adapted to fit modern versions of scikit-learn.
 
-This version went for the strict minimum, and only support pyhton 3.10.
+This version went for the strict minimum, and only support pyhton 3.10. It comes with no guarantee.
 
 License is MIT.
 
